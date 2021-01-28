@@ -1,0 +1,9 @@
+FROM Ubuntu
+RUN apt update
+RUN apt install -y iputils-ping net-tools iproute2 git zip
+RUN tar -C /usr/local -xzf files/go1.15.6.linux-amd64.tar.gz
+RUN git clone https://github.com/aler9/rtsp-simple-server.git
+RUN cd rtsp-simple-server && PATH=$PATH:/usr/local/go/bin GOPATH=$HOME/go make release-nodocker
+RUN tar -xzf rtsp-simple-server/release/rtsp-simple-server_*_linux_amd64.tar.gz
+RUN ip route add 10.250.0.0/16 via 192.168.250.3
+

@@ -1,0 +1,11 @@
+FROM networkstatic/iperf3
+
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y iputils-ping net-tools iproute2 apache2 curl iptables ethtool
+RUN a2enmod cgi
+
+COPY rtsp-simple-server.yml scripts/start-iperf.sh scripts/setup-iperf.sh ./
+COPY scripts/test.sh scripts/register.sh /usr/lib/cgi-bin/
+
+ENTRYPOINT []
+CMD /setup-iperf.sh && /start-iperf.sh

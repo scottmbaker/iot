@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+
+apiVersion: v2
+name: iperf-server
+kubeVersion: ">=1.17.0"
+type: application
+version: 0.0.1
+appVersion: v0.0.1
+description: iperf server
+home: https://onosproject.org
+maintainers:
+  - name: ONOS Support
+    email: support@opennetworking.org

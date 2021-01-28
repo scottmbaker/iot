@@ -1,0 +1,36 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: core-net
+spec:
+    config: '{
+      "cniVersion": "0.3.1",
+      "type": "simpleovs",
+      "ipam": {
+         "type": "static"
+      }
+    }'
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: udp-proxy
+  labels:
+    app: udp-proxy
+  annotations:
+    k8s.v1.cni.cncf.io/networks: '[
+            { "name": "core-net", "interface": "core-rtr-proxy", "ips": ["192.168.250.4/24"] }
+    ]'
+spec:
+  containers:
+  - name: udp-proxy
+    image: smbaker/udp-proxy:test
+    imagePullPolicy: Always
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+          - NET_ADMIN
+

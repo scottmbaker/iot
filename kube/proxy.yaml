@@ -1,0 +1,50 @@
+---
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: core-net
+spec:
+    config: '{
+      "cniVersion": "0.3.1",
+      "type": "simpleovs",
+      "ipam": {
+         "type": "static"
+      }
+    }'
+
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: proxy
+  labels:
+    app: proxy
+  annotations:
+    k8s.v1.cni.cncf.io/networks: '[
+            { "name": "core-net", "interface": "core-rtr-proxy", "ips": ["192.168.250.2/24"] }
+    ]'
+spec:
+  containers:
+  - name: proxy
+    image: smbaker/rtsp-proxy:test
+    imagePullPolicy: Always
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+          - NET_ADMIN
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rtsp-proxy
+spec:
+  type: NodePort
+  ports:
+  - port: 8554
+    targetPort: 8554
+    protocol: TCP
+    name: rtsp-tcp
+    nodePort: 30356
+  selector:
+    app: proxy

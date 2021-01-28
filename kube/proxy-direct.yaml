@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: proxy-direct
+  labels:
+    app: proxy-direct
+spec:
+  hostNetwork: true
+  containers:
+  - name: proxy-direct
+    image: smbaker/rtsp-direct:test
+    imagePullPolicy: Always
+    securityContext:
+      privileged: true
+      capabilities:
+        add:
+          - NET_ADMIN
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: proxy-direct
+#spec:
+#  type: NodePort
+#  ports:
+#  - port: 8554
+#    targetPort: 8554
+#    protocol: TCP
+#    name: proxy-direct-tpc
+#    nodePort: 30356
+#  selector:
+#    app: proxy-direct

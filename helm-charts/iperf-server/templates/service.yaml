@@ -1,0 +1,23 @@
+# SPDX-FileCopyrightText: 2020-present Open Networking Foundation <info@opennetworking.org>
+#
+# SPDX-License-Identifier: LicenseRef-ONF-Member-1.0
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "iperf-server.fullname" . }}
+  labels:
+    app: {{ template "iperf-server.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    {{- include "iperf-server.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    name: {{ template "iperf-server.fullname" . }}
+  ports:
+    - name: iperf
+      port: 5201
+      targetPort: 5201
+      nodePort: {{ .Values.service.nodePort }}

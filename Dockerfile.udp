@@ -1,0 +1,12 @@
+FROM ubuntu:20.04
+
+RUN echo one
+RUN apt update
+RUN DEBIAN_FRONTEND=noninteractive apt install -y iputils-ping net-tools iproute2 apache2 curl iptables ethtool netcat socat
+RUN a2enmod cgi
+#RUN chmod a+rw /etc/hosts
+
+COPY scripts/start-udp.sh scripts/setup-udp.sh ./
+COPY scripts/test.sh scripts/register.sh /usr/lib/cgi-bin/
+
+CMD /setup-udp.sh && /start-udp.sh
