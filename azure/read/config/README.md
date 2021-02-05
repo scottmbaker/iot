@@ -1,0 +1,1 @@
+copy these files to /etc/azure/reader
