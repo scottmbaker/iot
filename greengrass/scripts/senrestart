@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo /greengrass/v2/bin/greengrass-cli component restart   --names "com.example.Sender"

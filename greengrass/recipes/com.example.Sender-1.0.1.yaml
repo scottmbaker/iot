@@ -1,0 +1,36 @@
+---
+RecipeFormatVersion: 2020-01-25
+ComponentName: com.example.Sender
+ComponentVersion: '1.0.1'
+ComponentDescription: My first AWS IoT Greengrass component.
+ComponentPublisher: Amazon
+ComponentConfiguration:
+  DefaultConfiguration:
+    Message: world
+    accessControl:
+      aws.greengrass.ipc.pubsub:
+        "com.example.Sender:pubsub:1":
+          policyDescription: Allows access to publish to test/topic and MQTT.
+          operations:
+            - "aws.greengrass#PublishToTopic"
+            - "aws.greengrass#PublishToIoTCore"
+            - "aws.greengrass#SubscribeToIoTCore"
+          resources:
+            - "*"
+      aws.greengrass.ipc.mqttproxy:
+        "com.example.Sender:pubsub:2":
+          policyDescription: Allows access to publish to test/topic and MQTT.
+          operations:
+            - "aws.greengrass#PublishToTopic"
+            - "aws.greengrass#PublishToIoTCore"
+            - "aws.greengrass#SubscribeToIoTCore"
+          resources:
+            - "*"        
+Manifests:
+  - Platform:
+      os: linux
+    Lifecycle:
+      Install: |
+        python3 -m pip install awsiotsdk
+      Run: |
+        python3 -u {artifacts:path}/sender.py '{configuration:/Message}'

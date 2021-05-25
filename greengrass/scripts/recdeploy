@@ -1,0 +1,2 @@
+#!/bin/bash
+sudo /greengrass/v2/bin/greengrass-cli deployment create   --recipeDir ~/MyGreengrassCore/recipes   --artifactDir ~/MyGreengrassCore/artifacts   --merge "com.example.Receiver=1.0.1"

@@ -1,0 +1,36 @@
+---
+RecipeFormatVersion: 2020-01-25
+ComponentName: com.example.Receiver
+ComponentVersion: '1.0.1'
+ComponentDescription: Receive Messages from MQTT
+ComponentPublisher: Amazon
+ComponentConfiguration:
+  DefaultConfiguration:
+    Message: world
+    accessControl:
+      aws.greengrass.ipc.pubsub:
+        "com.example.Receiver:pubsub:1":
+          policyDescription: Allows access to publish to test/topic and MQTT.
+          operations:
+            - "aws.greengrass#PublishToTopic"
+            - "aws.greengrass#PublishToIoTCore"
+            - "aws.greengrass#SubscribeToIoTCore"
+          resources:
+            - "*"
+      aws.greengrass.ipc.mqttproxy:
+        "com.example.Receiver:pubsub:2":
+          policyDescription: Allows access to publish to test/topic and MQTT.
+          operations:
+            - "aws.greengrass#PublishToTopic"
+            - "aws.greengrass#PublishToIoTCore"
+            - "aws.greengrass#SubscribeToIoTCore"
+          resources:
+            - "*"        
+Manifests:
+  - Platform:
+      os: linux
+    Lifecycle:
+      Install: |
+        python3 -m pip install awsiotsdk
+      Run: |
+        python3 -u {artifacts:path}/receiver.py '{configuration:/Message}'
